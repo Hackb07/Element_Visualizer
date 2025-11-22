@@ -1,11 +1,14 @@
 import React from 'react';
-import { getElement } from '../../data/elements';
+import { getElement, getStability, getElectronConfig, getValency } from '../../data/elements';
 
-const InfoPanel = ({ counts }) => {
+const InfoPanel = ({ counts, viewMode, setViewMode, showBonds, setShowBonds }) => {
     const element = getElement(counts.protons);
     const isIon = counts.protons !== counts.electrons;
     const charge = counts.protons - counts.electrons;
     const massNumber = counts.protons + counts.neutrons;
+    const stability = getStability(counts.protons, counts.neutrons);
+    const config = getElectronConfig(counts.electrons);
+    const valency = getValency(counts.electrons);
 
     return (
         <div className="info-panel">
@@ -29,9 +32,61 @@ const InfoPanel = ({ counts }) => {
                     </span>
                 </div>
                 <div className="prop-row">
-                    <span>Status:</span>
-                    <span>{isIon ? 'Ion' : 'Neutral Atom'}</span>
+                    <span>Electron Config:</span>
+                    <span>{config}</span>
                 </div>
+                <div className="prop-row">
+                    <span>Valency:</span>
+                    <span>{valency > 0 ? '+' + valency : valency}</span>
+                </div>
+                <div className="prop-row">
+                    <span>Structure:</span>
+                    <span>{element.structure}</span>
+                </div>
+                <div className="prop-row">
+                    <span>Stability:</span>
+                    <span style={{ color: stability === 'Stable' ? '#92FE9D' : '#FF5555' }}>
+                        {stability}
+                    </span>
+                </div>
+
+                <button
+                    className="view-toggle-btn"
+                    onClick={() => setViewMode(prev => prev === 'atom' ? 'crystal' : 'atom')}
+                    style={{
+                        width: '100%',
+                        marginTop: '10px',
+                        padding: '8px',
+                        background: 'rgba(0, 201, 255, 0.2)',
+                        border: '1px solid rgba(0, 201, 255, 0.5)',
+                        color: '#92FE9D',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontWeight: 'bold'
+                    }}
+                >
+                    {viewMode === 'atom' ? 'View Crystal Structure' : 'Back to Atom'}
+                </button>
+
+                {viewMode === 'crystal' && (
+                    <button
+                        className="bond-toggle-btn"
+                        onClick={() => setShowBonds(prev => !prev)}
+                        style={{
+                            width: '100%',
+                            marginTop: '10px',
+                            padding: '8px',
+                            background: showBonds ? 'rgba(255, 200, 0, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+                            border: showBonds ? '1px solid rgba(255, 200, 0, 0.5)' : '1px solid rgba(255, 255, 255, 0.2)',
+                            color: showBonds ? '#FFD700' : '#AAAAAA',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontWeight: 'bold'
+                        }}
+                    >
+                        {showBonds ? 'Hide Bonds' : 'Show Bonds'}
+                    </button>
+                )}
             </div>
 
             <div className="details">

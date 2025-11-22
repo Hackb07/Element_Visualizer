@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 
-const Electron = ({ radius, speed, offset, color }) => {
+const Electron = ({ radius, speed, offset, color, size }) => {
     const ref = useRef();
     // Initialize with random rotation once on mount
     const [rotation] = useState(() => [Math.random() * Math.PI, Math.random() * Math.PI, 0]);
@@ -21,9 +21,14 @@ const Electron = ({ radius, speed, offset, color }) => {
     return (
         <group rotation={rotation}>
             <mesh ref={ref}>
-                <sphereGeometry args={[0.15, 16, 16]} />
+                <sphereGeometry args={[size, 16, 16]} />
                 <meshBasicMaterial color={color} />
                 <pointLight distance={3} intensity={2} color={color} />
+            </mesh>
+            {/* Orbital Line (Ring) */}
+            <mesh rotation={[Math.PI / 2, 0, 0]}>
+                <torusGeometry args={[radius, 0.03, 64, 100]} />
+                <meshBasicMaterial color={color} opacity={0.5} transparent side={THREE.DoubleSide} />
             </mesh>
         </group>
     );
@@ -57,7 +62,7 @@ const Electrons = ({ count }) => {
     return (
         <group>
             {electrons.map((e) => (
-                <Electron key={e.key} radius={e.radius} speed={e.speed} offset={e.offset} color="#44AAFF" />
+                <Electron key={e.key} radius={e.radius} speed={e.speed} offset={e.offset} color="#00FFFF" size={0.2} />
             ))}
         </group>
     );

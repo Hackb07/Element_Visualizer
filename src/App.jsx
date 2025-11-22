@@ -10,16 +10,24 @@ function App() {
     neutrons: 0,
     electrons: 1
   });
+  const [viewMode, setViewMode] = useState('atom'); // 'atom' or 'crystal'
+  const [showBonds, setShowBonds] = useState(true);
 
   return (
     <div className="app-container">
       <div className="scene-container">
-        <Scene {...counts} />
+        <Scene {...counts} viewMode={viewMode} showBonds={showBonds} />
       </div>
       <div className="ui-overlay">
         <h1 className="app-title">Element Builder 3D</h1>
         <div className="main-layout">
-          <InfoPanel counts={counts} />
+          <InfoPanel
+            counts={counts}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            showBonds={showBonds}
+            setShowBonds={setShowBonds}
+          />
           <Controls counts={counts} setCounts={setCounts} />
         </div>
       </div>

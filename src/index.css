@@ -15,6 +15,11 @@ body {
   height: 100vh;
 }
 
+#root {
+  width: 100%;
+  height: 100%;
+}
+
 .app-container {
   position: relative;
   width: 100%;
@@ -39,14 +44,14 @@ body {
   z-index: 1;
   pointer-events: none;
   /* Let clicks pass through to canvas */
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 20px;
-  box-sizing: border-box;
 }
 
+/* Title - Absolute Top Center */
 .app-title {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   text-align: center;
   font-size: 2rem;
   margin: 0;
@@ -57,18 +62,22 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 20px rgba(0, 201, 255, 0.5);
+  width: 100%;
+  pointer-events: none;
 }
 
+/* Main Layout - Container for panels (mostly for mobile flex, but used for structure) */
 .main-layout {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  width: 100%;
   height: 100%;
-  padding-bottom: 20px;
+  pointer-events: none;
 }
 
-/* Info Panel */
+/* Info Panel - Absolute Bottom Left */
 .info-panel {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
   pointer-events: auto;
   background: rgba(10, 10, 20, 0.8);
   backdrop-filter: blur(10px);
@@ -77,6 +86,8 @@ body {
   padding: 20px;
   width: 300px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .element-header {
@@ -145,8 +156,11 @@ body {
   line-height: 1.4;
 }
 
-/* Controls */
+/* Controls - Absolute Bottom Right */
 .controls-container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
   pointer-events: auto;
   background: rgba(10, 10, 20, 0.8);
   backdrop-filter: blur(10px);
@@ -219,94 +233,68 @@ body {
   background: rgba(255, 50, 50, 0.4);
 }
 
-/* Responsive Design */
+/* Responsive Design - Mobile */
 @media (max-width: 768px) {
   .app-title {
-    font-size: 1.5rem;
+    position: static;
+    /* Back to flow */
+    transform: none;
     margin-top: 10px;
-    flex-shrink: 0;
-    /* Prevent title from shrinking */
+    margin-bottom: 10px;
+  }
+
+  .ui-overlay {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: auto;
+    /* Allow scrolling on mobile */
+    pointer-events: none;
+    /* Clicks pass through empty areas */
   }
 
   .main-layout {
+    display: flex;
     flex-direction: column;
-    /* Stack Info then Controls */
-    justify-content: space-between;
-    /* Info at top, Controls at bottom */
     align-items: center;
     width: 100%;
-    height: 100%;
+    height: auto;
+    /* Let content dictate height */
     padding-bottom: 20px;
-    overflow-y: auto;
-    /* Allow scrolling if height is too small */
-    pointer-events: none;
-    /* Let clicks pass through empty space */
   }
 
   .info-panel {
-    pointer-events: auto;
+    position: static;
+    /* Back to flow */
     width: 90%;
     max-width: 400px;
-    margin-top: 10px;
-    max-height: 35vh;
-    /* Limit height to avoid covering everything */
-    overflow-y: auto;
-    font-size: 0.85rem;
-    /* Slightly smaller text */
+    margin-bottom: 15px;
+    max-height: none;
+    /* Let it grow */
   }
 
   .controls-container {
-    pointer-events: auto;
+    position: static;
+    /* Back to flow */
     width: 90%;
     max-width: 400px;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 15px;
-    padding: 15px;
-    margin-bottom: 20px;
-    /* Ensure space from bottom */
   }
 
   .control-group {
     margin: 0 5px;
   }
+}
 
-  .control-group h3 {
-    font-size: 0.8rem;
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 1.5rem;
   }
 
   .buttons button {
     width: 35px;
     height: 35px;
-    /* Larger touch targets */
-  }
-
-  .symbol {
-    font-size: 2rem;
-  }
-
-  .name h2 {
-    font-size: 1.2rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .app-title {
-    font-size: 1.2rem;
-  }
-
-  .info-panel {
-    max-height: 30vh;
-  }
-
-  .controls-container {
-    gap: 10px;
-    padding: 10px;
-  }
-
-  .buttons button {
-    width: 32px;
-    height: 32px;
   }
 }
