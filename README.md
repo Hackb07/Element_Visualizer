@@ -45,7 +45,7 @@ An interactive, educational 3D simulation tool that allows users to construct at
 1.  **Clone the repository**
     ```bash
     git clone https://github.com/Hackb07/Element_Visualizer.git
-    cd element-builder-3d
+    cd Element_Visualizer
     ```
 
 2.  **Install dependencies**
